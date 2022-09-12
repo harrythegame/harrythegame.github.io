@@ -1,0 +1,31 @@
+body{
+    background-color: black;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.menu{
+    background-color: black;
+}
+
+/* News ticker */
+#news{
+    background-color: rgb(147, 152, 153)
+}
+
+#newsLeftBlock, #newsRightBlock{
+    background-color: black;
+}
+
+.newsItem{
+    font-size: 3vh;
+}
+
+/* Prices */
+.price-unavailable{
+    color: red;
+}
+
+.price-available{
+    color: lightgreen;
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Harry: The Game</title>
+        <link href = 'base.css' rel = 'stylesheet'>
+        <link href = 'styles/default.css' rel = 'stylesheet'>
+        <script src = 'jquery.js'></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet"> 
+    </head>
+    <body>
+        <!-- This is initialized by Game.CreateStoryChapter -->
+        <!-- It's outside everything for better effect -->
+        <div id = 'storyChapter'>
+            <p class = 'story-title'>Story Chapter Name</p>
+        </div>
+
+        <div id = 'topbar'>
+            <p id = 'options' class = 'topbar-button'>Options</p>
+            <p id = 'stats' class = 'topbar-button'>Stats</p>
+            <p id = 'changelog' class = 'topbar-button'>Changelog</p>
+
+            <p id = 'version' class = 'topbar-button'>Version: 0.0</p>
+        </div>
+
+        <div id = 'game'>
+            
+
+            <!-- This is the popup created by Game.CreateAlert -->
+            <div id = 'alert'>
+                <div id = 'popup'>
+                    <p id = 'message'>This is a placeholder message. If you are seeing this in an unmodified version of the game, this means something has gone very wrong and you should report this to Enckripted!</p>
+                    <button id = 'ok'>OK</button>
+                </div>
+            </div>
+
+            <div id = 'news'>
+                <div id = 'newsLeftBlock'></div>
+                <div id = 'newsRightBlock'></div>
+            </div>
+
+            <h1 id = 'toeCounter'>Toes: 0</h1>
+            <h3 id = 'toePerSecondCounter'>Per Second: 0</h3>
+            <button id = 'gainToe'>Gain Toe</button>
+
+            <div id = 'buildings'>
+            </div>
+
+            <div id = 'upgrades'>
+                <div id = 'cannonInterrogation' class = 'upgrade'>
+                    <p class = 'upgrade-header'>Interrogate Cannon</p>
+                    <p class = 'upgrade-description'>Cannon's hiding some juicy secrets, and we need to extract them to increase toe production.</p>
+                    <p class = 'upgrade-price' id = 'cannonInterrogationPrice'>Price: 5 toes</p>
+                    <button class = 'upgrade-button' id = 'cannonInterrogationButton'>Interrogate</button>
+                </div>
+            </div>
+
+
+            
+        </div>
+
+        <!-- This is where all menus are stored (options, changelog, etc.)-->
+        <div id = 'menus'>
+            <button id = 'closeMenu'>X</button>
+
+            <div id = 'optionsMenu' class = 'menu'>
+                <p class = 'menu-title'>Options</p>
+                <button id = 'manualSaveButton'>Manual Save</button>
+                <br><br>
+                <input id = 'importSaveInput' type = 'text' placeholder = "Put your save here:">
+                <br>
+                <button id = 'importSaveButton'>Import Save</button>
+                <button id = 'exportSaveButton'>Export Save</button>
+                <br><br>
+                <button id = 'wipeSaveButton'>Wipe Save</button>
+            </div>
+            <div id = 'statsMenu' class = 'menu'>
+                <p class = 'menu-title'>Stats</p>
+                <p id = 'toesEarnedLabel'>Toes Earned (in total): 0</p>
+            </div>
+            <div id = 'changelogMenu' class = 'menu'>
+                <p class = 'menu-title'>Changelog</p>
+                <br>
+                <h3>Minor Update - 9/11/22</h3>
+                <li>
+                    <ol>- Added a "Toes Earned" stat</ol>
+                    <ol>- Changed the news ticker movement to make it smoother</ol>
+                    <ol>- Added intro cutscene</ol>
+                    <ol>- Added the version marker</ol>
+                    <ol>- Moved the game to harrygame.github.io</ol>
+                    <ol>- Added the ability to import and export saves</ol>
+                </li>
+            </div>
+        </div>
+        
+        <script src = 'js/helper.js'></script>
+        <script src = 'js/game.js'></script>
+        <script src = 'js/upgrades.js'></script>
+        <script src = 'js/buildings.js'></script>
+        <script src = 'js/news.js'></script>
+    </body>
+</html>
