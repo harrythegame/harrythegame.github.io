@@ -21,7 +21,7 @@ var Upgrades;
             Effect: function () {
                 Game.ToesPerClick += 2;
             },
-            Unlocks: ['test']
+            Unlocks: []
         },
         'bul1': {
             Id: 'bul1',
@@ -48,6 +48,12 @@ var Upgrades;
     Upgrades.CurrentUpgrades = [];
     Upgrades.UpgradePath = [];
     function ShowUpgrade(id) {
+        console.log(id);
+        //Safeguard
+        if (Upgrades.CurrentUpgrades.indexOf(id) != -1 || Upgrades.UpgradePath.indexOf(id) != -1) {
+            console.error("ShowUpgrade has been called twice for the upgrade ".concat(id, " and the call has been dropped."));
+            return;
+        }
         $('#upgrades').append("\n        <div id = '".concat(id, "' class = 'upgrade'>\n            <p id = '").concat(id, ":header' class = 'upgrade-header'>").concat(Upgrades.AllUpgrades[id].Title, "</p>\n            <p id = '").concat(id, ":description' class = 'upgrade-description'>").concat(Upgrades.AllUpgrades[id].Description, "</p>\n            <p id = '").concat(id, ":price' class = 'upgrade-price'>Price: ").concat(Upgrades.AllUpgrades[id].Price, " toes</p>\n            <button id = '").concat(id, ":button' class = 'upgrade-button'>Buy Upgrade</button>\n        </div>\n        "));
         Upgrades.CurrentUpgrades.push(id);
         //JQuery doesn't want to acknowledge this as an element for some reason, probably stems from document.querySelector not being able to find it either
@@ -88,7 +94,7 @@ function RefillInterrogationChance(length) {
         CannonInterrogationChance.push(0);
     CannonInterrogationChance[Math.round(Math.random() * CannonInterrogationChance.length - 1)] = 1;
 }
-RefillInterrogationChance(12);
+RefillInterrogationChance(1);
 $('#cannonInterrogationButton').on('click', function () {
     if (Game.Toes >= Upgrades.CannonInterrogationPrice) {
         if (Upgrades.UpgradePath.length == Object.keys(Upgrades.AllUpgrades).length) {
@@ -102,7 +108,7 @@ $('#cannonInterrogationButton').on('click', function () {
                 Game.CreateAlert("Cannon has no available upgrades right now! Buy some of the upgrades you have right now to unlock more.");
                 return;
             }
-            RefillInterrogationChance(12);
+            RefillInterrogationChance(1);
             var Index = ChooseIndex(Upgrades.PossibleUpgrades);
             Upgrades.ShowUpgrade(Upgrades.PossibleUpgrades[Index]);
             Upgrades.PossibleUpgrades.splice(Index, 1);

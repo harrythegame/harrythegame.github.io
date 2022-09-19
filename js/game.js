@@ -1,20 +1,23 @@
-var VERSION = 0.004;
+var VERSION = 0.005;
 var Game;
 (function (Game) {
     Game.Toes = 0;
     Game.ToesPerClick = 1;
     Game.ToesPerSecond = 0;
     Game.ToesEarned = 0;
+    Game.GameStart = Date.now();
     //Story chapter
+    var StoryBeingDisplayed = false;
     var DisplayNextTimeout;
     var FINAL_STORY_ELEMENT = '(tap to continue)';
     function CreateStoryChapter(title, elements, onfinish) {
+        if (StoryBeingDisplayed)
+            return;
+        StoryBeingDisplayed = true;
         $('#storyChapter').css('display', 'block');
         var ElementsIndex = 0;
         function DisplayNextElement() {
             //This is the final element to be added
-            console.log("Length: ".concat(elements.length));
-            console.log("Index: ".concat(ElementsIndex));
             if (ElementsIndex == elements.length)
                 elements.push(FINAL_STORY_ELEMENT);
             var text = elements[ElementsIndex];
@@ -36,13 +39,13 @@ var Game;
         }
         $('#storyChapter').on('click', function () {
             if ($('.new-story-element').length == 0) {
+                //So the event doesn't fire again if this is another call to Game.CreateStoryChapter
+                $('#storyChapter').off('click');
                 $('#storyChapter').animate({
                     "opacity": "0"
                 }, 1000, "swing", function () {
                     $(this).css('display', 'none');
                     $('.story-element').remove();
-                    //So the event doesn't fire again if this is another call to Game.CreateStoryChapter
-                    $('#storyChapter').off('click');
                     if (onfinish)
                         onfinish();
                 });
@@ -60,6 +63,7 @@ var Game;
         }, 1000, "swing", function () {
             DisplayNextElement();
         });
+        StoryBeingDisplayed = false;
     }
     Game.CreateStoryChapter = CreateStoryChapter;
     //Alerts
@@ -93,6 +97,7 @@ var Game;
             LastLogonTime: Date.now(),
             Toes: Game.Toes,
             ToesEarned: Game.ToesEarned,
+            GameStart: Game.GameStart,
             CurrentUpgrades: Upgrades.CurrentUpgrades,
             BoughtUpgrades: Upgrades.UpgradePath,
             Buildings: []
@@ -137,12 +142,15 @@ var Game;
                     SaveData.Buildings = [];
                 case 0.003:
                     //whoopsie
-                    if (SaveData.ToesEarned == NaN)
+                    if (SaveData.ToesEarned == NaN || SaveData.ToesEarned == undefined)
                         SaveData.ToesEarned = SaveData.Toes;
+                case 0.004:
+                    SaveData.GameStart = SaveData.LastLogonTime;
             }
             console.log(SaveData);
             Game.Toes = SaveData.Toes;
             Game.ToesEarned = SaveData.ToesEarned;
+            Game.GameStart = SaveData.GameStart;
             //So Jucier Toes isn't in there by default
             if (SaveData.CurrentUpgrades.length > 0 || SaveData.BoughtUpgrades.length > 0) {
                 Upgrades.PossibleUpgrades = [];
@@ -236,6 +244,8 @@ var Game;
         Game.Toes = 0;
         Game.ToesPerClick = 1;
         Game.ToesPerSecond = 0;
+        Game.ToesEarned = 0;
+        Game.GameStart = Date.now();
         Upgrades.PossibleUpgrades = ["juc1"];
         Upgrades.CurrentUpgrades = [];
         Upgrades.UpgradePath = [];
@@ -284,7 +294,6 @@ $('#changelog').on('click', function () {
 });
 // Options menu
 $('#options').on('click', function () {
-    console.log('click');
     Game.OpenMenu('options');
 });
 $('#manualSaveButton').on('click', function () {
@@ -308,14 +317,16 @@ $('#wipeSaveButton').on('click', function () {
 var UpdateStatsInterval;
 function UpdateStats() {
     $('#toesEarnedLabel').html("Toes Earned (in total): ".concat(Beautify(Math.floor(Game.ToesEarned))));
+    $('#timePlayedLabel').html("Time Played: ".concat(FormatDate(Date.now() - Game.GameStart, 3)));
 }
 $('#stats').on('click', function () {
     UpdateStats();
     UpdateStatsInterval = setInterval(function () {
         UpdateStats();
         //Check if the menu has been closed
-        if ($('#statsMenu').css('display') == 'none') {
+        if ($('#statsMenu').parent()[0] == document.getElementById('menus')) {
             clearInterval(UpdateStatsInterval);
+            return;
         }
     }, 200);
     Game.OpenMenu('stats');

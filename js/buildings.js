@@ -29,15 +29,20 @@ var Buildings;
     }
     Buildings.UpdateToesPerSecond = UpdateToesPerSecond;
     function ShowBuilding(name) {
+        //Safeguard
+        if ($("#".concat(name))[0]) {
+            console.error("Attempted to call ShowBuilding on ".concat(name, " twice. The function call has been dropped."));
+            return;
+        }
         var SelectedBuilding;
-        var i = -1;
+        var i = 0;
         for (var _i = 0, AllBuildings_2 = Buildings.AllBuildings; _i < AllBuildings_2.length; _i++) {
             var building = AllBuildings_2[_i];
-            i++;
             if (building.Name == name) {
                 SelectedBuilding = building;
                 break;
             }
+            i++;
         }
         if (!SelectedBuilding)
             console.error('Attempt to get building that does not exist.');
