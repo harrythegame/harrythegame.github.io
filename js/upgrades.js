@@ -94,7 +94,7 @@ function RefillInterrogationChance(length) {
         CannonInterrogationChance.push(0);
     CannonInterrogationChance[Math.round(Math.random() * CannonInterrogationChance.length - 1)] = 1;
 }
-RefillInterrogationChance(1);
+RefillInterrogationChance(12);
 $('#cannonInterrogationButton').on('click', function () {
     if (Game.Toes >= Upgrades.CannonInterrogationPrice) {
         if (Upgrades.UpgradePath.length == Object.keys(Upgrades.AllUpgrades).length) {
@@ -108,7 +108,7 @@ $('#cannonInterrogationButton').on('click', function () {
                 Game.CreateAlert("Cannon has no available upgrades right now! Buy some of the upgrades you have right now to unlock more.");
                 return;
             }
-            RefillInterrogationChance(1);
+            RefillInterrogationChance(12);
             var Index = ChooseIndex(Upgrades.PossibleUpgrades);
             Upgrades.ShowUpgrade(Upgrades.PossibleUpgrades[Index]);
             Upgrades.PossibleUpgrades.splice(Index, 1);
