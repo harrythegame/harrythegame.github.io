@@ -6,6 +6,7 @@
         <link href = 'base.css' rel = 'stylesheet'>
         <link href = 'styles/default.css' rel = 'stylesheet'>
         <script src = 'jquery.js'></script>
+        <script src = 'jqueryui.js'></script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +28,24 @@
         </div>
 
         <div id = 'game'>
-            
+            <div id = 'cheatMenu'>
+                <h3 style = 'margin: 0%;'>baba hacks v69</h3>
+
+                <h5 class = 'cheat-heading'>ToeCreator</h5>
+                <input id = 'toeCreatorInput' type = 'text'><button id = 'toeCreatorButton'>Create Toes</button>
+
+                <h5 class = 'cheat-heading'>TimeWarp</h5>
+                <input id = 'timeWarpInput' type = 'text' placeholder = 'in seconds'><button id = 'timeWarpButton'>Warp Time</button>
+
+                <h5 class = 'cheat-heading'>ExtremePersuasion</h5>
+                <button id = 'extremePersuasionButton'>OFF</button>
+
+                <h5 class = 'cheat-heading'>AutoBuyer</h5>
+                <button id = 'autoBuyerButton'>OFF</button>
+
+                <h5 class = 'cheat-heading'>AutoClicker</h5>
+                <button id = 'autoClickerButton'>OFF</button>
+            </div>
 
             <!-- This is the popup created by Game.CreateAlert -->
             <div id = 'alert'>
@@ -52,14 +70,11 @@
             <div id = 'upgrades'>
                 <div id = 'cannonInterrogation' class = 'upgrade'>
                     <p class = 'upgrade-header'>Interrogate Cannon</p>
-                    <p class = 'upgrade-description'>Cannon's hiding some juicy secrets, and we need to extract them to increase toe production.</p>
+                    <p class = 'upgrade-description' id = 'cannonInterrogationDesc'>Cannon's hiding some juicy secrets, and we need to extract them to increase toe production.</p>
                     <p class = 'upgrade-price' id = 'cannonInterrogationPrice'>Price: 5 toes</p>
-                    <button class = 'upgrade-button' id = 'cannonInterrogationButton'>Interrogate</button>
+                    <button class = 'upgrade-button' id = 'cannonInterrogationButton'>Interrogate</button><p id = 'autoInterrogatorLabel'> - Auto-Interrogator: </p><button class = 'upgrade-button' id = 'autoInterrogatorButton'>OFF</button>
                 </div>
             </div>
-
-
-            
         </div>
 
         <!-- This is where all menus are stored (options, changelog, etc.)-->
@@ -85,6 +100,13 @@
             <div id = 'changelogMenu' class = 'menu'>
                 <p class = 'menu-title'>Changelog</p>
                 <br>
+                <h3>The "I'm Back!" Update</h3>
+                <li>
+                    <ol>- Added some cheats</ol>
+                    <ol>- Added two new buildings</ol>
+                    <ol>- Added 41 new upgrades</ol>
+                    <ol>- Added some bug fixes</ol>
+                </li>
                 <h3>Minor Update - 9/18/22</h3>
                 <li>
                     <ol>- Added the "Time Played" stat</ol>
@@ -111,5 +133,6 @@
         <script src = 'js/upgrades.js'></script>
         <script src = 'js/buildings.js'></script>
         <script src = 'js/news.js'></script>
+        <script src = 'js/cheats.js'></script>
     </body>
 </html>

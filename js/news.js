@@ -5,8 +5,7 @@ var News;
     //Private function to add arrays of stories
     function AddStories(stories) {
         if (typeof stories != 'string') {
-            for (var _i = 0, stories_1 = stories; _i < stories_1.length; _i++) {
-                var story = stories_1[_i];
+            for (let story of stories) {
                 News.Stories.push(story);
             }
         }
@@ -34,7 +33,7 @@ var News;
             "Social media prankster dies after trying to drop a high concentration of Uranium-235 on a pedestrian.",
             "New car dealer \"Cadillac Kingdom\" to open!",
             "Fortnite: The Musical has been announced. It has sold one morbillion tickets in preorders.",
-            "People cheer as world leaders finally outlaw ".concat(Choose([
+            `People cheer as world leaders finally outlaw ${Choose([
                 "ironic memes",
                 "Fortnite",
                 "Jambaju Gaming",
@@ -42,18 +41,18 @@ var News;
                 "70 pound midgets",
                 "🤓",
                 "the phrase \"who asked\""
-            ])),
+            ])}`,
             "Scientists discover that the maximum of anything in the world is 1e308, due to poor programming language choices when creating the simulation that is our world.",
             "Birds may not be real, but injuries are! Buy Jimmy Health Insurance today!",
             "Breaking News: undefined",
             "\"jkl;\" surpasses \"asdf\" in usage.",
             "Left handed people nearly half of population, apocolypse soon.",
-            "This news story is so ".concat(Choose([
+            `This news story is so ${Choose([
                 "silly",
                 "goofy aah",
                 "dumb",
                 "tasty"
-            ]), ":"),
+            ])}:`,
             "Kid dies of death: what happens next gave me depression.",
             "This news ticker is sponsored by NordVPN. You probably don't want people knowing you played this game. Get NordVPN today!",
             "JoltStorm accused of starting illegal bakery teleporting bread, wanted in 37 countries.",
@@ -138,11 +137,13 @@ var News;
     News.UpdateStories = UpdateStories;
 })(News || (News = {}));
 function news() {
-    var ChosenStory = Choose(News.Stories);
-    $('#news').append("\n    <p class = 'newsItem'>".concat(ChosenStory, "</p>\n    "));
+    let ChosenStory = Choose(News.Stories);
+    $('#news').append(`
+    <p class = 'newsItem'>${ChosenStory}</p>
+    `);
     $('.newsItem').animate({
-        'left': "".concat(0 - $('.newsItem').width(), "px")
-    }, (window.innerWidth + $('.newsItem').width()) * 8, 'swing', function () {
+        'left': `${0 - $('.newsItem').width()}px`
+    }, (window.innerWidth + $('.newsItem').width()) * 8, 'linear', function () {
         $('.newsItem').remove();
         news();
     });

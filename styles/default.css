@@ -29,3 +29,9 @@ body{
 .price-available{
     color: lightgreen;
 }
+
+/* Cheats */
+#cheatMenu{
+    background-color: black;
+    border: 2px solid white;
+}

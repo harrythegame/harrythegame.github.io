@@ -10,23 +10,23 @@ function Random(min, max) {
 }
 //Numbers and their formatting
 function Beautify(num) {
-    var shortFormatting = ['million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion'];
-    var longPrefix = ['', 'un', 'duo', 'tre', 'quattuoro', 'quinqua', 'sexto', 'septem', 'octo', 'novem'];
-    var longSuffix = ['decillion', 'vigintillion', 'trigintillion', 'quadragintillion', 'quinquagintillion', 'sexagintillion'];
+    let shortFormatting = ['million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion'];
+    let longPrefix = ['', 'un', 'duo', 'tre', 'quattuoro', 'quinqua', 'sexto', 'septem', 'octo', 'novem'];
+    let longSuffix = ['decillion', 'vigintillion', 'trigintillion', 'quadragintillion', 'quinquagintillion', 'sexagintillion'];
     //I highly doubt it'll ever get to this point, but just in case
     if (num == NaN || num == Infinity)
         return 'Infinite';
     if (num >= 1e6) {
-        var numArray = num.toLocaleString('en-US').split(',');
-        var numArrayLength = numArray.length - 2;
-        var format = void 0;
+        let numArray = num.toLocaleString('en-US').split(',');
+        let numArrayLength = numArray.length - 2;
+        let format;
         if (numArrayLength < 10) {
             format = shortFormatting[numArrayLength - 1];
         }
         else {
             format = longPrefix[numArrayLength % 10] + longSuffix[Math.floor(numArrayLength / 10) - 1];
         }
-        return "".concat(numArray[0], ".").concat(numArray[1], " ").concat(format);
+        return `${numArray[0]}.${numArray[1]} ${format}`;
     }
     else {
         return num.toLocaleString('en-US');
@@ -34,45 +34,46 @@ function Beautify(num) {
 }
 function FormatDate(milliseconds, sigfigs) {
     //i just put milliseconds so i can pass in Date.now() directly
-    var unitNames = ['seconds', 'minutes', 'hours', 'days', 'years'];
-    var unitValues = [milliseconds / 1000];
-    var dividers = [1, 60, 60, 24, 365];
-    for (var unitIndex = 1; unitIndex < unitNames.length; unitIndex++) {
-        var previousValue = unitValues[unitIndex - 1];
+    let unitNames = ['seconds', 'minutes', 'hours', 'days', 'years'];
+    let unitValues = [milliseconds / 1000];
+    let dividers = [1, 60, 60, 24, 365];
+    for (let unitIndex = 1; unitIndex < unitNames.length; unitIndex++) {
+        let previousValue = unitValues[unitIndex - 1];
         unitValues[unitIndex] = Math.floor((previousValue - previousValue % dividers[unitIndex]) / dividers[unitIndex]);
         unitValues[unitIndex - 1] = Math.floor(previousValue % dividers[unitIndex]);
     }
-    var strParts = [];
-    for (var i = 0; i < unitNames.length; i++) {
+    let strParts = [];
+    for (let i = 0; i < unitNames.length; i++) {
         //If the rest of the array is 0s, break
-        var shouldBreak = true;
-        for (var x = i; x < unitNames.length; x++) {
+        let shouldBreak = true;
+        for (let x = i; x < unitNames.length; x++) {
             if (unitValues[x] !== 0)
                 shouldBreak = false;
         }
         if (shouldBreak)
             break;
-        strParts.push("".concat(unitValues[i], " ").concat(unitNames[i]));
+        strParts.push(`${unitValues[i]} ${unitNames[i]}`);
     }
     strParts = strParts.reverse();
     //Remove all unecessary items
     strParts.splice(sigfigs);
-    var str = '';
-    for (var i = 0; i < strParts.length; i++) {
+    let str = '';
+    for (let i = 0; i < strParts.length; i++) {
         if (i + 1 == strParts.length - 1) {
-            str += "".concat(strParts[i], " and ").concat(strParts[i + 1]);
+            str += `${strParts[i]} and ${strParts[i + 1]}`;
             break;
         }
         else if (strParts.length == 1) {
-            str = "".concat(strParts[0]);
+            str = `${strParts[0]}`;
         }
         else {
-            str += "".concat(strParts[i], ", ");
+            str += `${strParts[i]}, `;
         }
     }
     return str;
 }
 function UpdateIfPriceAvailableOnElement(element, price) {
+    element.html(`Price: ${Beautify(Math.ceil(price))} toes`);
     if (Game.Toes >= price) {
         if (!element.hasClass('price-available')) {
             element.removeClass('price-unavailable');
@@ -87,7 +88,7 @@ function UpdateIfPriceAvailableOnElement(element, price) {
     }
 }
 function ConvertPercentageToPx(percentange, angle) {
-    var screen;
+    let screen;
     switch (angle) {
         case 'width':
             screen = window.innerWidth;
