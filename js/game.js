@@ -1,12 +1,16 @@
-const VERSION = 0.006;
+const VERSION = 0.007;
 var Game;
 (function (Game) {
     Game.Toes = 0;
     Game.BaseToesPerClick = 1;
     Game.ToesPerClick = 1;
     Game.ToesPerSecond = 0;
-    Game.ToesEarned = 0;
     Game.GameStart = Date.now();
+    Game.Stats = {
+        ToesEarned: 0,
+        SuccesfulInterrogations: 0,
+        FailedInterrogations: 0,
+    };
     //Story chapter
     let StoryBeingDisplayed = false;
     let DisplayNextTimeout;
@@ -17,7 +21,7 @@ var Game;
         StoryBeingDisplayed = true;
         $('#storyChapter').css('display', 'block');
         let ElementsIndex = 0;
-        function DisplayNextElement() {
+        let DisplayNextElement = function () {
             //This is the final element to be added
             if (ElementsIndex == elements.length)
                 elements.push(FINAL_STORY_ELEMENT);
@@ -29,6 +33,7 @@ var Game;
                 "opacity": "1"
             }, 2000, "swing", function () {
                 $(this).removeClass('new-story-element');
+                DisplayNextElement();
             });
             if (text == FINAL_STORY_ELEMENT) {
                 $('.new-story-element').css('font-size', '2vh');
@@ -36,29 +41,26 @@ var Game;
                 return;
             }
             ElementsIndex++;
-            DisplayNextTimeout = setTimeout(function () {
-                DisplayNextElement();
-            }, 2050); //Slight delay so it works on mobile devices
-        }
+        };
         $('#storyChapter').on('click', function () {
             if ($('.new-story-element').length == 0) {
+                $('.story-element').css('opacity', '1');
                 //So the event doesn't fire again if this is another call to Game.CreateStoryChapter
-                $('#storyChapter').off('click');
+                $('#storyChapter').off('click', '**');
                 $('#storyChapter').animate({
                     "opacity": "0"
                 }, 1000, "swing", function () {
                     $(this).css('display', 'none');
                     $('.story-element').remove();
+                    //what i do to get stuff to work
+                    //this is patchwork until i find a more elegant solution (one that keeps the console clean ideally)
                     if (onfinish)
-                        onfinish();
+                        setTimeout(onfinish, 50);
+                    DisplayNextElement = null;
+                    return;
                 });
-                return;
             }
-            $('.new-story-element').stop();
-            $('.new-story-element').css('opacity', '1');
-            $('.new-story-element').removeClass('new-story-element');
-            clearTimeout(DisplayNextTimeout);
-            DisplayNextElement();
+            $('.new-story-element').stop(true, true);
         });
         $('.story-title').html(title);
         $('#storyChapter').animate({
@@ -99,11 +101,11 @@ var Game;
             Version: VERSION,
             LastLogonTime: Date.now(),
             Toes: Game.Toes,
-            ToesEarned: Game.ToesEarned,
             GameStart: Game.GameStart,
             CurrentUpgrades: Upgrades.CurrentUpgrades,
             BoughtUpgrades: Upgrades.UpgradePath,
             Buildings: [],
+            Stats: Game.Stats,
         };
         //Go over all the buildings and put them in the array (we don't need to use string keys because we can always just switch stats for different buildings)
         for (let building of Buildings.AllBuildings) {
@@ -161,12 +163,18 @@ var Game;
                         SaveData.ToesEarned = SaveData.Toes;
                 case 0.004:
                     SaveData.GameStart = SaveData.LastLogonTime;
+                case 0.006:
+                    SaveData.Stats = {
+                        ToesEarned: SaveData.ToesEarned,
+                        SuccesfulInterrogations: 0,
+                        FailedInterrogations: 0,
+                    };
             }
             Game.Reset();
             console.log(SaveData);
             Game.Toes = SaveData.Toes;
-            Game.ToesEarned = SaveData.ToesEarned;
             Game.GameStart = SaveData.GameStart;
+            Game.Stats = SaveData.Stats;
             //So Jucier Toes isn't in there by default
             if (SaveData.CurrentUpgrades.length > 0 || SaveData.BoughtUpgrades.length > 0) {
                 Upgrades.PossibleUpgrades = [];
@@ -175,25 +183,16 @@ var Game;
             for (let id of SaveData.CurrentUpgrades) {
                 Upgrades.ShowUpgrade(id);
             }
-            //Follow the path to get all upgrades
-            for (let id of SaveData.BoughtUpgrades) {
-                //The item exists in the array
-                if (Upgrades.PossibleUpgrades.indexOf(id) != -1) {
-                    Upgrades.PossibleUpgrades.splice(Upgrades.PossibleUpgrades.indexOf(id), 1);
-                }
-                //Needs to be at the bottom for this to work
-                if (Upgrades.UpgradePath.indexOf(id) == -1) {
-                    Upgrades.UpgradePath.push(id);
-                    Upgrades.AllUpgrades[id].Effect();
-                }
-            }
-            //Remove all of the unecessary requirments
-            for (let id of SaveData.BoughtUpgrades) {
-                for (let unlockId of Upgrades.AllUpgrades[id].Unlocks) {
-                    Upgrades.AllUpgrades[unlockId].Requires.splice(Upgrades.AllUpgrades[unlockId].Requires.indexOf(id), 1);
-                    if (Upgrades.AllUpgrades[unlockId].Requires.length == 0 && Upgrades.UpgradePath.indexOf(unlockId) == -1 && Upgrades.PossibleUpgrades.indexOf(unlockId) == -1 && Upgrades.CurrentUpgrades.indexOf(unlockId) == -1) {
-                        console.log(unlockId);
-                        console.log(Upgrades.UpgradePath.indexOf(unlockId));
+            for (let upgradeId of Object.keys(Upgrades.AllUpgrades)) {
+                for (let unlockId of Upgrades.AllUpgrades[upgradeId].Unlocks) {
+                    let canUnlock = true;
+                    for (let requirment of Upgrades.AllUpgrades[unlockId].Requires) {
+                        if (Upgrades.UpgradePath.indexOf(requirment) == -1) {
+                            canUnlock = false;
+                            break;
+                        }
+                    }
+                    if (canUnlock && Upgrades.UpgradePath.indexOf(unlockId) == -1) {
                         Upgrades.PossibleUpgrades.push(unlockId);
                     }
                 }
@@ -220,7 +219,7 @@ var Game;
             Game.CreateAlert(`While you were away, you gained ${Beautify(earnings)} toes.`);
         }
         //Inital lore
-        if (Game.ToesEarned == 0) {
+        if (Game.Stats.ToesEarned == 0) {
             Game.CreateStoryChapter("Prolouge", [
                 "Harry always struck everyone as a bit odd.",
                 "Maybe it was because of his moaning in class.",
@@ -244,16 +243,21 @@ var Game;
                 ]);
             });
         }
+        if (Game.Stats.ToesEarned >= 20) {
+            $('#upgrades').css('display', 'block');
+        }
     }
     Game.Load = Load;
     function Reset() {
         Game.Toes = 0;
         Game.ToesPerClick = 1;
         Game.ToesPerSecond = 0;
-        Game.ToesEarned = 0;
         Game.GameStart = Date.now();
-        //structured clone doesn't work due to the functions
-        Upgrades.AllUpgrades = Object.assign({}, Upgrades.ConstUpgrades);
+        Game.Stats = {
+            ToesEarned: 0,
+            SuccesfulInterrogations: 0,
+            FailedInterrogations: 0,
+        };
         Upgrades.PossibleUpgrades = ["juc1"];
         Upgrades.CurrentUpgrades = [];
         Upgrades.UpgradePath = [];
@@ -276,6 +280,29 @@ var Game;
     }
     Game.Reset = Reset;
 })(Game || (Game = {}));
+//Tabs
+let Tabs = {
+    'Buildings': [$('#buildings'), $('#upgrades')],
+    'Instructions': [$('#instructions')],
+};
+let CurrentTab = 'Buildings';
+$('.tab').on('click', function () {
+    let name = $(this).html();
+    $(`#tab-${CurrentTab.toLowerCase()}`).css({
+        'background-color': 'black',
+        'color': 'white',
+    });
+    $(`#tab-${name.toLowerCase()}`).css({
+        'background-color': 'white',
+        'color': 'black',
+    });
+    for (let item of Tabs[CurrentTab]) {
+        item.css('display', 'none');
+    }
+    for (let item of Tabs[name]) {
+        item.css('display', 'block');
+    }
+});
 //Game Update
 let lastTime = Date.now();
 let delta = 0;
@@ -286,11 +313,26 @@ setInterval(() => {
     $('#toePerSecondCounter').html(`Per Second: ${Beautify(Math.floor(Game.ToesPerSecond))}`);
     let earned = (Game.ToesPerSecond / 1000) * delta;
     Game.Toes += earned;
-    Game.ToesEarned += earned;
+    Game.Stats.ToesEarned += earned;
 }, 10);
+let checks = [];
 $('#gainToe').on('click', function () {
     Game.Toes += Game.ToesPerClick;
-    Game.ToesEarned += Game.ToesPerClick;
+    Game.Stats.ToesEarned += Game.ToesPerClick;
+    if (Game.Stats.ToesEarned >= 20 && $('#upgrades').css('display') == 'none') {
+        Game.CreateStoryChapter("This is boring", [
+            "It isn't long before you realize clicking a button over and over is kinda boring.",
+            "You'll never reach critical toe amounts at this rate.",
+            `You go over to Harry, who has been moaning in those entire ${FormatDate(Date.now() - Game.GameStart, 1)}.`,
+            "and ask if he knows anything you could do other than press that button.",
+            "He tells you to follow him past a steel door, into a room with somebody tied to a chair.",
+            "\"This little sussy boy,\" Harry says with a devious smirk. \"Has some secrets to make more toes.\"",
+            "\"It's your job to get them out of him.\" he says, turning back to you.",
+            "Ignoring all morals and human rights, this could net some serious toe production.",
+        ], function () {
+            $('#upgrades').css('display', 'block');
+        });
+    }
 });
 //Initial load
 $(window).on('load', function () {
@@ -332,8 +374,10 @@ $('#wipeSaveButton').on('click', function () {
 //Stats menu
 let UpdateStatsInterval;
 function UpdateStats() {
-    $('#toesEarnedLabel').html(`Toes Earned (in total): ${Beautify(Math.floor(Game.ToesEarned))}`);
+    $('#toesEarnedLabel').html(`Toes Earned (in total): ${Beautify(Math.floor(Game.Stats.ToesEarned))}`);
     $('#timePlayedLabel').html(`Time Played: ${FormatDate(Date.now() - Game.GameStart, 3)}`);
+    $('#succesfulInterrogationsLabel').html(`Succesful Interrogations: ${Game.Stats.SuccesfulInterrogations}`);
+    $('#failedInterrogationsLabel').html(`Failed Interrogations: ${Game.Stats.FailedInterrogations}`);
 }
 $('#stats').on('click', function () {
     UpdateStats();

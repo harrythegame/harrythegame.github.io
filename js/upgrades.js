@@ -3,7 +3,7 @@ var Upgrades;
     Upgrades.CannonInterrogationPrice = 5;
     //I thought about having this exported and be called All, but I don't think it's needed anywhere else
     //Requires is optional, I just think it helps with being able to tell with what upgrades point to where
-    Upgrades.ConstUpgrades = {
+    Upgrades.AllUpgrades = {
         "juc1": {
             Id: "juc1",
             Title: "Juicier Toes",
@@ -330,7 +330,7 @@ var Upgrades;
                     }
                     else {
                         $('#autoInterrogatorButton').html('ON');
-                        setInterval(function () {
+                        Upgrades.AutoInterrogatorInterval = setInterval(function () {
                             alertsOnUpgradePrompt = false;
                             $('#cannonInterrogationButton').trigger('click');
                             alertsOnUpgradePrompt = true;
@@ -493,7 +493,6 @@ var Upgrades;
             Requires: ['f015', 'ptc2'],
         },
     };
-    Upgrades.AllUpgrades = Object.assign({}, Upgrades.ConstUpgrades);
     Upgrades.PossibleUpgrades = ["juc1"];
     Upgrades.CurrentUpgrades = [];
     Upgrades.UpgradePath = [];
@@ -524,8 +523,14 @@ var Upgrades;
                 Upgrades.CurrentUpgrades.splice(Upgrades.CurrentUpgrades.indexOf(id), 1);
                 Upgrades.UpgradePath.push(id);
                 for (let unlockId of Upgrades.AllUpgrades[id].Unlocks) {
-                    Upgrades.AllUpgrades[unlockId].Requires.splice(Upgrades.AllUpgrades[unlockId].Requires.indexOf(id), 1);
-                    if (Upgrades.AllUpgrades[unlockId].Requires.length == 0) {
+                    let canUnlock = true;
+                    for (let requirment of Upgrades.AllUpgrades[unlockId].Requires) {
+                        if (Upgrades.UpgradePath.indexOf(requirment) == -1) {
+                            canUnlock = false;
+                            break;
+                        }
+                    }
+                    if (canUnlock) {
                         Upgrades.PossibleUpgrades.push(unlockId);
                     }
                 }
@@ -578,18 +583,53 @@ $('#cannonInterrogationButton').on('click', function () {
         }
         Game.Toes -= Upgrades.CannonInterrogationPrice;
         if (CannonInterrogationChance[CannonInterrogationChance.length - 1] == 1) {
+            Game.Stats.SuccesfulInterrogations += 1;
             RefillInterrogationChance(InterrogationChance);
             let Index = ChooseIndex(Upgrades.PossibleUpgrades);
+            if (Upgrades.PossibleUpgrades[Index] == 'bul1') {
+                Game.CreateStoryChapter("A New Era", [
+                    "After doing a bit of trolling on Cannon,",
+                    "you've found a new way to make toes involving... Among Us?",
+                    "You explain the process to Harry.",
+                    "It involves using some toes, performing a ritual at 3 AM,",
+                    "and Among Us figurines.",
+                    "Harry tells you that his closet has lots of Among us figurines in it",
+                    "and this plan could make toe production automatic.",
+                    "All you need is just a bit of toes to start the ritaul.",
+                ]);
+            }
+            if (Upgrades.PossibleUpgrades[Index] == 'bul2') {
+                Game.CreateStoryChapter("But Why Spleens?", [
+                    "And you thought the Amogus ritual was weird.",
+                    "Harry's gotten some metal presses from IKEA to make more toes.",
+                    "You've discovred taht you can use a metal press on spleens to turn them into toes.",
+                    "All you need are the spleens.",
+                    "Harry says taht he could get some from the Amogus, as they don't need them.",
+                    "The extraction process involves lots of toes though.",
+                    "Time to continue grinding.",
+                ]);
+            }
+            if (Upgrades.PossibleUpgrades[Index] == 'bul3') {
+                Game.CreateStoryChapter("Farming Simulator 69", [
+                    "Harry's garden has now started growing toes, showing that it is possible.",
+                    "You've taken initiative and prepared to create a toe farming empire.",
+                    "You've hired workers to plant and harvest massive toe plantations.",
+                    "You've defiled graves en masse to create some fertilizer.",
+                    "You've smithed diamonds onto sticks to create hoes.",
+                    "All that's left to do is to buy some land using toes."
+                ]);
+            }
             Upgrades.ShowUpgrade(Upgrades.PossibleUpgrades[Index]);
         }
         else {
+            Game.Stats.FailedInterrogations += 1;
             CannonInterrogationChance.pop();
             CreateAlert(`You interrogated Cannon, but only learned that ${Choose([
                 "khachapuri is important to all aspects of life.",
                 "Cannon's CoC is doing good.",
                 "Cannon is so silly.",
                 "Cannon doesn't do drugs (or the 🤓)",
-                "Cannon studies sussy sciences."
+                "Cannon studies sussy sciences.",
             ])}`);
         }
     }

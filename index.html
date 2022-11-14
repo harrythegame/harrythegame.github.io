@@ -7,6 +7,7 @@
         <link href = 'styles/default.css' rel = 'stylesheet'>
         <script src = 'jquery.js'></script>
         <script src = 'jqueryui.js'></script>
+        <script src = 'jquerytouchpunch.js'></script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,10 +33,10 @@
                 <h3 style = 'margin: 0%;'>baba hacks v69</h3>
 
                 <h5 class = 'cheat-heading'>ToeCreator</h5>
-                <input id = 'toeCreatorInput' type = 'text'><button id = 'toeCreatorButton'>Create Toes</button>
+                <input id = 'toeCreatorInput' class = 'cheat-input' type = 'text'><button id = 'toeCreatorButton'>Create Toes</button>
 
                 <h5 class = 'cheat-heading'>TimeWarp</h5>
-                <input id = 'timeWarpInput' type = 'text' placeholder = 'in seconds'><button id = 'timeWarpButton'>Warp Time</button>
+                <input id = 'timeWarpInput' class = 'cheat-input' type = 'text' placeholder = 'in seconds'><button id = 'timeWarpButton'>Warp Time</button>
 
                 <h5 class = 'cheat-heading'>ExtremePersuasion</h5>
                 <button id = 'extremePersuasionButton'>OFF</button>
@@ -67,7 +68,7 @@
             <div id = 'buildings'>
             </div>
 
-            <div id = 'upgrades'>
+            <div id = 'upgrades' style = 'display: none;'>
                 <div id = 'cannonInterrogation' class = 'upgrade'>
                     <p class = 'upgrade-header'>Interrogate Cannon</p>
                     <p class = 'upgrade-description' id = 'cannonInterrogationDesc'>Cannon's hiding some juicy secrets, and we need to extract them to increase toe production.</p>
@@ -96,11 +97,23 @@
                 <p class = 'menu-title'>Stats</p>
                 <p id = 'toesEarnedLabel'>Toes Earned (in total): 0</p>
                 <p id = 'timePlayedLabel'>Time Played: 0 seconds</p>
+                <br>
+                <p id = 'succesfulInterrogationsLabel'>Succesful Interrogations: 0</p>
+                <p id = 'failedInterrogationsLabel'>Failed Interrogations: 0</p>
             </div>
             <div id = 'changelogMenu' class = 'menu'>
                 <p class = 'menu-title'>Changelog</p>
                 <br>
-                <h3>The "I'm Back!" Update</h3>
+                <h3>Minor Update - 11/2/22</h3>
+                <li>
+                    <ol>- Fixed issues with the cheats on mobile (large input boxes and not draggable)</ol>
+                    <ol>- Added more lore</ol>
+                    <ol>- Added some more news stories along with more Cannon failed interrogation messages</ol>
+                    <ol>- Made it so the upgrade path is more consistent</ol>
+                    <ol></ol>
+                    <ol>P.S. Expect better update pace now that fall is nearing it's end, it's the busiest season for me.</ol>
+                </li>
+                <h3>The "I'm Back!" Update - 10/19/22</h3>
                 <li>
                     <ol>- Added some cheats</ol>
                     <ol>- Added two new buildings</ol>

@@ -4,12 +4,12 @@ var Cheats;
         //in the name of typechecking
         let val = Number($('#toeCreatorInput').val());
         Game.Toes += val;
-        Game.ToesEarned += val;
+        Game.Stats.ToesEarned += val;
     });
     $('#timeWarpButton').on('click', function () {
         let val = Number($('#timeWarpInput').val());
         Game.Toes += Game.ToesPerSecond * val;
-        Game.ToesEarned += Game.ToesPerSecond * val;
+        Game.Stats.ToesEarned += Game.ToesPerSecond * val;
     });
     let prevInterrogationChance = InterrogationChance;
     $('#extremePersuasionButton').on('click', function () {

@@ -70,9 +70,10 @@ var News;
             "Spanish teacher under arrest for assaulting someone wearing headphones.",
             "Band director under arrest for recieving crack from his dentist.",
             "Harry Potter now canonically has erectile dysfunction.",
+            "Teenager commits vehicular manslaughter, innocent verdict because he \"did it for the vine.\"",
         ]);
         //They've started accumulate some toes
-        if (Game.ToesEarned >= 1000) {
+        if (Game.Stats.ToesEarned >= 1000) {
             AddStories([
                 "Strange boy has weird obessision with toes, recruiting others into his cult following.",
                 "Toes have been put on pizza. By Harry of course.",
@@ -87,10 +88,12 @@ var News;
                 "HowToBasic released a new video on how to properly prepare a toe, apparently people fell for it and some people have acid burns on their tounge.",
                 "For some reason people like having 69 toes specifically.",
                 "Toadally is investigating the fact that h is in the first letter of Harry's name. This can't be a coincidence.",
-                "You have 10 toes too? #relatable"
+                "You have 10 toes too? #relatable",
+                "Teenager burns down hospital, recieving death sentence because he \"did it for the TikTok.\"",
+                "Alex Jones has been cancelled after saying that toes are controlled by the government.",
             ]);
         }
-        if (Game.ToesEarned >= 10000) {
+        if (Game.Stats.ToesEarned >= 10000) {
             AddStories([
                 "This is a story all about how my life got turned flipped upside down, my fingers all got replaced with toes, and also I should mention that I lost my nose.",
                 "Lil' Hey's new album topping the charts!",
@@ -107,7 +110,7 @@ var News;
             ]);
         }
         //10 million
-        if (Game.ToesEarned >= 1e7) {
+        if (Game.Stats.ToesEarned >= 1e7) {
             AddStories([
                 "A toe based economy is beginning to take shape.",
                 "We've skipped Web3 and Web5 and gone to WebT. This is an internet based on toes.",
@@ -116,20 +119,24 @@ var News;
                 "D6500 has become rich off of his toe khachapuri.",
                 "Day 12: Using this metal inside the car engine, I've created a home for myself. However, I ran out of car oil, and had to quit the challenge because my skin was beginning to turn orange. It was a sad day indeed.",
                 "JoltStorm is still teleporting bread.",
+                "The National Museum of Toes now exists."
             ]);
         }
         //1 billion
-        if (Game.ToesEarned >= 1e9) {
+        if (Game.Stats.ToesEarned >= 1e9) {
             AddStories([
                 "A machine has been created to measure toe value, allowing for a toe based economy to finally take shape.",
                 "Harry <3 toes",
                 "JoltStorm put toes in their bakery's bread, warrants for arrest removed.",
-                "D6500"
+                "D6500 now lives in a mansion shaped like khachapuri.",
+                "What does toe juice taste like? Consensus is a mix between cranberry juice and blackberries.",
+                "Toe mines have been confirmed to not exist. \"Well I mean the... the cookie clickers have the cookie mines, and I don't, uh, think Enckripted is very original, so I thought I could mine out toes. But turns out he hadn't even bothered creating the underground, so I can now say that I have touched the void."
             ]);
         }
-        if (Random(0, 10) == Random(0, 10)) {
-            AddStories("This news story has a 1 in a 100 chance of showing up.");
-        }
+        if (Buildings.AllBuildings)
+            if (Random(0, 10) == Random(0, 10)) {
+                AddStories("This news story has a 1 in a 100 chance of showing up.");
+            }
         if (Random(0, 100) == Random(0, 100)) {
             AddStories("This news story has a 1 in a 10,000 chance of showing up.");
         }
@@ -137,6 +144,7 @@ var News;
     News.UpdateStories = UpdateStories;
 })(News || (News = {}));
 function news() {
+    News.UpdateStories();
     let ChosenStory = Choose(News.Stories);
     $('#news').append(`
     <p class = 'newsItem'>${ChosenStory}</p>
