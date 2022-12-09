@@ -4,7 +4,7 @@
     <head>
         <title>Harry: The Game</title>
         <link href = 'base.css' rel = 'stylesheet'>
-        <link href = 'styles/default.css' rel = 'stylesheet'>
+        <link id = 'theme' href = 'styles/dark.css' rel = 'stylesheet'>
         <script src = 'jquery.js'></script>
         <script src = 'jqueryui.js'></script>
         <script src = 'jquerytouchpunch.js'></script>
@@ -25,7 +25,7 @@
             <p id = 'stats' class = 'topbar-button'>Stats</p>
             <p id = 'changelog' class = 'topbar-button'>Changelog</p>
 
-            <p id = 'version' class = 'topbar-button'>Version: 0.0</p>
+            <p id = 'version' class = 'topbar-button'>Version: 0</p>
         </div>
 
         <div id = 'game'>
@@ -84,6 +84,12 @@
 
             <div id = 'optionsMenu' class = 'menu'>
                 <p class = 'menu-title'>Options</p>
+                <p style = 'display: inline;'>Current theme: </p><select id = 'themeSelect'>
+                    <option value = 'dark'>Dark</option>
+                    <option value = 'light'>Light</option>
+                    <option value = 'terminal'>Terminal</option>
+                </select>
+                <br><br>
                 <button id = 'manualSaveButton'>Manual Save</button>
                 <br><br>
                 <input id = 'importSaveInput' type = 'text' placeholder = "Put your save here:">
@@ -148,5 +154,54 @@
         <script src = 'js/buildings.js'></script>
         <script src = 'js/news.js'></script>
         <script src = 'js/cheats.js'></script>
+        <script>
+            /*
+            let patch = {
+                        'f001': 'juc3',
+                        'f002': 'f001',
+                        'f003': 'amg3',
+                        'f004': 'tps1',
+                        'amg3': 'amg4',
+                        'f005': 'f002',
+                        'f006': 'amg5',
+                        'f007': 'spl2',
+                        'f008': 'f003',
+                        'f009': 'pfa1',
+                        'amg4': 'amg6',
+                        'f010': 'f004',
+                        'f011': 'f005',
+                        'f012': 'f006',
+                        'amg5': 'amg7',
+                        'f013': 'pfs1',
+                        'f014': 'f007',
+                        'tps1': 'tps2',
+                        'tps2': 'tps3',
+                        'amg6': 'amg8',
+                        'tps3': 'tps4',
+                        'f015': 'f008',
+                    }
+            
+            let upgrades = Upgrades.AllUpgrades;
+
+            for(let upgrade of Object.keys(upgrades)){
+                console.log(upgrades[patch[upgrade]]);
+                if(patch[upgrade]){
+                    upgrades[patch[upgrade]] = upgrades[upgrade];
+                    upgrades[upgrade] = null;
+
+                    let i = 0;
+                    for(let req of upgrades[patch[upgrade]].Requires){
+                        i++;
+                        if(patch[req]){
+                            upgrades[patch[upgrade]].Requires.splice(i, 1, patch[req])
+                        }
+                    }
+                }
+
+                
+            }
+            console.log(upgrades);
+            */
+        </script>
     </body>
 </html>

@@ -1,0 +1,57 @@
+body{
+    background-color: black;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+}
+
+button{
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+}
+
+button:active{
+    background-color: gray;
+    color: black;
+    border: 1px solid gray;
+}
+
+.menu{
+    background-color: black;
+}
+
+#alert{
+    background-color: black;
+}
+
+/* News ticker */
+#news{
+    background-color: rgb(147, 152, 153)
+}
+
+#newsLeftBlock, #newsRightBlock{
+    background-color: black;
+}
+
+.newsItem{
+    font-size: 3vh;
+}
+
+/* Prices */
+.price-unavailable{
+    color: red;
+}
+
+.price-available{
+    color: lightgreen;
+}
+
+/* Cheats */
+#cheatMenu{
+    background-color: black;
+    border: 2px solid white;
+}
+
+#storyChapter{
+    background-color: black;
+}

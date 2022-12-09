@@ -71,6 +71,7 @@ var News;
             "Band director under arrest for recieving crack from his dentist.",
             "Harry Potter now canonically has erectile dysfunction.",
             "Teenager commits vehicular manslaughter, innocent verdict because he \"did it for the vine.\"",
+            "\"I am not a tuba. I AM BETTER!\" - Euphoniums",
         ]);
         //They've started accumulate some toes
         if (Game.Stats.ToesEarned >= 1000) {
@@ -91,6 +92,9 @@ var News;
                 "You have 10 toes too? #relatable",
                 "Teenager burns down hospital, recieving death sentence because he \"did it for the TikTok.\"",
                 "Alex Jones has been cancelled after saying that toes are controlled by the government.",
+                "\"I don't like the chemicals they put in the water, that turn the toes into fingers!\" -Alex Jones",
+                "I am outside your walls.",
+                "Research shows that 99% of things on this news ticker are not news related at all.",
             ]);
         }
         if (Game.Stats.ToesEarned >= 10000) {
@@ -106,7 +110,12 @@ var News;
                 "Florida man tries to backwards long jump again, broke all their bones after falling down a staircase.",
                 "\"It's still just a prank bro, why you so mad?\" - social media influencer attempts to escape prison, by pouring poison in the guards food, using improvised explosives to blow a hole in the wall, and pouring boiling water on the warden's pants. He probably would have would have gotten away with it too, but he hijacked another car and drove into the power plant again.",
                 "Jambaju Gaming thinks Bangarang by Skrillex has the words \"chapstick on my balls\", he's been cancelled and has lost all of his subscribers.",
-                "Usain Bolt's toes are worth trillions of dollars. \"They're craved because they're so... muscular, and that probably makes them juicier.\" says a Durnen Boven, a local toe expert.",
+                "Usain Bolt's toes are worth trillions of dollars. \"They're craved because they're so... muscular, and that probably makes them juicier.\" says a Durnen Boven, a local toe consumption expert.",
+                "Cookbooks are coming out for the many uses for toes.",
+                "Fingers are overrated.",
+                //i'll finish this at somepoint: "Hello Internet, welcome to Game Theory, the show where you might want to refresh if you don't want to sit through this news ticker. In our last episode, we discussed how Five Night's at Freddy's is actually a first person shooter game, but today, we're not going to be talking about Five Night's at Freddy's. Today, we're going to be talking about how Harry is actually an NPC. Now, I know this sounds crazy, as he has helped us discover the magic of the toe, but hear me out. First of all, have you noticed th",
+                "Harry is starting work on a new autobiography: \"How I Became Drippy\"",
+                "The United States has amended the Constitution so people who have more than 10 fingers can be burned without a trial.",
             ]);
         }
         //10 million
@@ -119,7 +128,9 @@ var News;
                 "D6500 has become rich off of his toe khachapuri.",
                 "Day 12: Using this metal inside the car engine, I've created a home for myself. However, I ran out of car oil, and had to quit the challenge because my skin was beginning to turn orange. It was a sad day indeed.",
                 "JoltStorm is still teleporting bread.",
-                "The National Museum of Toes now exists."
+                "The National Museum of Toes now exists.",
+                "Florida man spun eternally. They're vomiting uncontrollably now.",
+                "Is it possible to understand all the references in this news ticker? NO!",
             ]);
         }
         //1 billion
@@ -156,5 +167,4 @@ function news() {
         news();
     });
 }
-News.UpdateStories();
 news();

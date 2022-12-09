@@ -23,6 +23,7 @@ var Buildings;
         {
             Name: "Amogus",
             DisplayName: "Amogus",
+            BasePrice: 20,
             Price: 20,
             PriceMult: BUILDING_MULT,
             BaseToesPerSecond: 2,
@@ -34,10 +35,11 @@ var Buildings;
         {
             Name: "SpleenConverter",
             DisplayName: "Spleen Converter",
+            BasePrice: 1200,
             Price: 1200,
             PriceMult: BUILDING_MULT,
-            BaseToesPerSecond: 16,
-            ToesPerSecond: 16,
+            BaseToesPerSecond: 32,
+            ToesPerSecond: 32,
             Amount: 0,
             Factors: [],
             Functions: [],
@@ -45,10 +47,11 @@ var Buildings;
         {
             Name: "Farm",
             DisplayName: "Farm",
+            BasePrice: 8400,
             Price: 8400,
             PriceMult: BUILDING_MULT,
-            BaseToesPerSecond: 200,
-            ToesPerSecond: 200,
+            BaseToesPerSecond: 400,
+            ToesPerSecond: 400,
             Amount: 0,
             Factors: [],
             Functions: [],
@@ -56,10 +59,11 @@ var Buildings;
         {
             Name: "City",
             DisplayName: "City",
+            BasePrice: 504000,
             Price: 504000,
             PriceMult: BUILDING_MULT,
-            BaseToesPerSecond: 3000,
-            ToesPerSecond: 3000,
+            BaseToesPerSecond: 5000,
+            ToesPerSecond: 5000,
             Amount: 0,
             Factors: [],
             Functions: [],
@@ -68,6 +72,7 @@ var Buildings;
     Buildings.AllBuildings = structuredClone(Buildings.BuildingList);
     function UpdateToesPerSecond() {
         Game.ToesPerSecond = 0;
+        Game.ToesPerClick = Game.BaseToesPerClick;
         for (let building of Buildings.AllBuildings) {
             building.ToesPerSecond = building.BaseToesPerSecond;
             //Factor in our factors
@@ -107,9 +112,10 @@ var Buildings;
         let Building = Buildings.AllBuildings[GetBuildingIndexFromName(name)];
         if (Game.Toes >= Building.Price) {
             Building.Amount += 1;
-            UpdateToesPerSecond();
             Game.Toes -= Building.Price;
-            Building.Price *= Building.PriceMult;
+            Building.BasePrice *= Building.PriceMult;
+            Building.Price = Building.BasePrice;
+            UpdateToesPerSecond();
             $(`#${Building.Name}-amount`).html(Building.Amount.toString());
             $(`#${Building.Name}-price`).html(`Price: ${Beautify(Math.round(Building.Price))} toes`);
         }

@@ -14,16 +14,15 @@ var Cheats;
     let prevInterrogationChance = InterrogationChance;
     $('#extremePersuasionButton').on('click', function () {
         //Chance the InterrogationChance depending on whether the cheat is on.
-        if (InterrogationChance == 1) {
-            InterrogationChance = prevInterrogationChance;
+        if (MaxInterrogationChance == 1) {
+            MaxInterrogationChance = prevInterrogationChance;
         }
         else {
-            prevInterrogationChance = InterrogationChance;
-            InterrogationChance = 1;
+            prevInterrogationChance = MaxInterrogationChance;
+            MaxInterrogationChance = 1;
         }
-        $('#extremePersuasionButton').html(InterrogationChance == 1 ? "ON" : "OFF");
-        CannonInterrogationChance = [];
-        RefillInterrogationChance(InterrogationChance);
+        $('#extremePersuasionButton').html(MaxInterrogationChance == 1 ? "ON" : "OFF");
+        InterrogationChance = Random(1, MaxInterrogationChance);
     });
     let buyerInterval;
     $('#autoBuyerButton').on('click', function () {
